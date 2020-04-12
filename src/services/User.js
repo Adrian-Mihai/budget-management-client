@@ -1,3 +1,5 @@
+import siteConstants from "../helpers/site_constants";
+
 const userService = {
   login: ({email, password}) => {
     const requestOptions = {
@@ -16,6 +18,9 @@ const userService = {
       () => {
         return Promise.reject({error: 'Service unavailable'});
       });
+  },
+  logout: () => {
+    localStorage.removeItem(siteConstants.TOKEN);
   }
 };
 
