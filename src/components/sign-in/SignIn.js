@@ -7,6 +7,8 @@ import localStorageService from "../../services/LocalStorage";
 import sitePaths from "../../helpers/site_paths";
 import siteConstants from "../../helpers/site_constants";
 
+import './SignIn.css';
+
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -28,9 +30,9 @@ class SignIn extends React.Component {
 
     return (
       <Container>
-        <Row className="justify-content-sm-center">
-          <Col sm={6}>
-            <Card bg="light">
+        <Row>
+          <Col className='center'>
+            <Card bg="dark" text='white'>
               <Card.Header className="text-center" as="h2">Sign In</Card.Header>
               <Card.Body>
                 <Formik
