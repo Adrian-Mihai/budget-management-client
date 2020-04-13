@@ -6,6 +6,7 @@ import sitePaths from "../../helpers/site_paths";
 import './App.css';
 import SignIn from "../sign-in/SignIn";
 import Dashboard from "../dashboard/Dashboard";
+import SignUp from "../sign-up/signUp";
 
 class App extends React.Component {
   render() {
@@ -14,6 +15,7 @@ class App extends React.Component {
         <Switch>
           <PrivateRoute exact path={sitePaths.DASHBOARD} component={Dashboard}/>
           <Route exact path={sitePaths.SIGN_IN} component={SignIn} />
+          <Route exact path={sitePaths.SIGN_UP} component={SignUp} />
         </Switch>
       </Router>
     );
