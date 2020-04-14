@@ -1,4 +1,5 @@
 import siteConstants from "../helpers/site_constants";
+import authHeader from "../helpers/auth-header";
 
 const userService = {
   logIn: ({email, password}) => {
@@ -30,6 +31,23 @@ const userService = {
     };
 
     return fetch(`${process.env.REACT_APP_API_URL}/users`, requestOptions).then(
+      requestSuccess => {
+        if(requestSuccess.ok){
+          return requestSuccess.json().then(parsedData => {return parsedData});
+        }
+        return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
+      },
+      () => {
+        return Promise.reject({error: 'Service unavailable'});
+      });
+  },
+  userInformation: () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: authHeader()
+    };
+
+    return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/decode`, requestOptions).then(
       requestSuccess => {
         if(requestSuccess.ok){
           return requestSuccess.json().then(parsedData => {return parsedData});
