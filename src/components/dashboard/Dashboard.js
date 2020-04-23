@@ -1,6 +1,7 @@
 import React from "react";
-import AppNavBar from "../app-navbar/appNavBar";
+import AppNavBar from "../app-navbar/AppNavBar";
 import userService from "../../services/User";
+import {Col, Container, Row} from "react-bootstrap";
 
 class Dashboard extends React.Component{
 
@@ -8,8 +9,8 @@ class Dashboard extends React.Component{
     super(props);
 
     this.state = {
-      user_uuid: '',
-      user_email: '',
+      userUUID: '',
+      userEmail: '',
       username: ''
     };
   }
@@ -18,8 +19,8 @@ class Dashboard extends React.Component{
     userService.userInformation().then(
       response => {
         this.setState({
-          user_uuid: response?.user_uuid,
-          user_email: response?.user_email,
+          userUUID: response?.user_uuid,
+          userEmail: response?.user_email,
           username: response?.username
         });
       },
@@ -31,7 +32,14 @@ class Dashboard extends React.Component{
 
   render() {
     return(
-      <AppNavBar title='Dashboard' history={this.props.history} username={this.state.username} />
+      <div>
+        <AppNavBar title='Dashboard' history={this.props.history} username={this.state.username} />
+        <Container>
+          <Row>
+            <Col></Col>
+          </Row>
+        </Container>
+      </div>
     )
   };
 }
