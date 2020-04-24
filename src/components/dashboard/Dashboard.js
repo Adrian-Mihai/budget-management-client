@@ -33,12 +33,7 @@ class Dashboard extends React.Component{
   render() {
     return(
       <div>
-        <AppNavBar title='Dashboard' history={this.props.history} username={this.state.username} />
-        <Container>
-          <Row>
-            <Col></Col>
-          </Row>
-        </Container>
+        <AppNavBar title='Dashboard' history={this.props.history}/>
       </div>
     )
   };
