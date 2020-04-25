@@ -1,12 +1,12 @@
 import authHeader from "../helpers/auth-header";
 
-const index = (user_UUID) => {
+const index = (user_UUID, page) => {
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
   };
 
-  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/${user_UUID}/transactions`, requestOptions).then(
+  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/${user_UUID}/transactions?page=${page}`, requestOptions).then(
     requestSuccess => {
       if(requestSuccess.ok){
         return requestSuccess.json().then(parsedData => {return parsedData});

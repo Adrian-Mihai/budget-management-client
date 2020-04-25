@@ -5,6 +5,7 @@ import {Alert, Col, Container, Row} from "react-bootstrap";
 import Transaction from "../transaction/Transaction";
 import './Dashboard.css'
 import transactionService from "../../services/Transaction";
+import InfiniteScroll from 'react-infinite-scroller';
 
 class Dashboard extends React.Component{
 
@@ -12,39 +13,11 @@ class Dashboard extends React.Component{
     super(props);
 
     this.state = {
-      userUUID: '',
-      userEmail: '',
-      username: '',
+      hasMoreTransactions: true,
+      hasNoTransactions: false,
+      totalPages: 1,
       transactions: []
     };
-  }
-
-  componentDidMount() {
-    userService.userInformation().then(
-      response => {
-        this.setState({
-          userUUID: response?.user_uuid,
-          userEmail: response?.user_email,
-          username: response?.username
-        });
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot){
-    if (this.state.userUUID !== prevState.userUUID){
-      transactionService.index(this.state.userUUID).then(
-        response => {
-          this.setState({transactions: response.transactions});
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    }
   }
 
   render() {
@@ -52,11 +25,53 @@ class Dashboard extends React.Component{
       <div>
         <AppNavBar title='Dashboard' history={this.props.history}/>
         <Container className='custom-container'>
-          {this.state.transactions.length ? this._transactions(this.state.transactions) : this._noTransactionsMessage()}
+          {(
+            <InfiniteScroll
+              loadMore={this._getTransactions}
+              hasMore={this.state.hasMoreTransactions}
+              loader={<Row key={0}><Col><Alert className="text-center" variant='info'>Loading ...</Alert></Col></Row>}
+            >
+              {!this.state.hasNoTransactions ? this._transactions(this.state.transactions) : this._noTransactionsMessage()}
+            </InfiniteScroll>
+          )}
         </Container>
       </div>
     )
   };
+
+  _getTransactions = (page) => {
+    if(page > this.state.totalPages) {
+      this.setState({
+        hasMoreTransactions: false
+      });
+      return
+    }
+    userService.userInformation().then(
+      response => {
+        transactionService.index(response.user_uuid, page).then(
+          response => {
+            if(response.total_pages === 0){
+              this.setState({
+                hasMoreTransactions: false,
+                hasNoTransactions: true
+              });
+              return
+            }
+            this.setState({
+              transactions: this.state.transactions.concat(response.transactions),
+              totalPages: response.total_pages
+            });
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
 
   _transactions = (transactions) => (
     transactions.map((transaction, i) => {
