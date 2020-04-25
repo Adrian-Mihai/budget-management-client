@@ -13,7 +13,7 @@ class AppNavBar extends React.Component{
 
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="sm" >
+      <Navbar bg="dark" variant="dark" expand="sm" sticky="top">
         <Navbar.Brand href={sitePaths.DASHBOARD}>{this.props.title}</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
