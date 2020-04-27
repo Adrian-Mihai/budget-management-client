@@ -38,7 +38,7 @@ const userService = {
         return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
       },
       () => {
-        return Promise.reject({error: 'Service unavailable'});
+        return Promise.reject({errors: ['Service unavailable']});
       });
   },
   userInformation: () => {

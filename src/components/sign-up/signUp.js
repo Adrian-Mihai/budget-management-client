@@ -32,8 +32,7 @@ class SignUp extends React.Component{
         <Row>
           <Col className='center'>
             <Card bg="dark" text="white">
-              <Card.Header className="text-center" as="h2">Sign Up</Card.Header>
-              <Button href={sitePaths.SIGN_IN} variant="outline-success" block>Sign In</Button>
+              <Card.Header className="text-center" as="h3">Sign Up</Card.Header>
               <Card.Body>
                 <Formik
                   initialValues={{email: '', password: '', passwordConfirmation: ''}}
@@ -73,7 +72,10 @@ class SignUp extends React.Component{
                   )}
                 </Formik>
               </Card.Body>
-              { this.state.requestInvalid ? (<Card.Footer>{this.state.errorMessages.map((message, i) => { return (<Alert key={i} variant="danger">{message}</Alert>)})}</Card.Footer>) : null }
+              <Card.Footer>
+                <Card.Text>If you do have an account <a href={sitePaths.SIGN_IN}>Sign In</a></Card.Text>
+                { this.state.requestInvalid ? this.state.errorMessages.map((message, i) => { return (<Alert key={i} variant="danger">{message}</Alert>)}) : null }
+              </Card.Footer>
             </Card>
           </Col>
         </Row>

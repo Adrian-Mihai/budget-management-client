@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Nav, Navbar} from "react-bootstrap";
+import {Nav, Navbar} from "react-bootstrap";
 
 import userService from "../../services/User";
 import sitePaths from "../../helpers/site_paths";
@@ -13,13 +13,15 @@ class AppNavBar extends React.Component{
 
   render() {
     return (
-      <Navbar bg="dark" variant="dark" expand="sm" >
+      <Navbar bg="dark" variant="dark" expand="sm" sticky="top">
         <Navbar.Brand href={sitePaths.DASHBOARD}>{this.props.title}</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#account">Account</Nav.Link>
+          </Nav>
           <Nav>
-            <Nav.Link href={sitePaths.USER_EDIT}>{this.props.username}</Nav.Link>
-            <Button onClick={() => this._logOut(this.props.history)} variant="outline-success">Sign Out</Button>
+            <Nav.Link onClick={() => this._logOut(this.props.history)}>Sign Out</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
