@@ -3,5 +3,9 @@
 }
 
 .loss {
-  color: firebrick;
+  color: #dc3545;
+}
+
+.custom-button {
+  margin-right: 1rem;
 }

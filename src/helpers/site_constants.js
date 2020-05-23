@@ -2,7 +2,8 @@ const siteConstants = {
   TOKEN: 'token',
   PASSWORD_LENGTH: 8,
   PLUS: '+',
-  MINUS: '-'
+  MINUS: '-',
+  TITLE: 'Budget Planning'
 };
 
 export default siteConstants;

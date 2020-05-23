@@ -1,11 +1,12 @@
 import React from "react";
 import AppNavBar from "../app-navbar/AppNavBar";
-import userService from "../../services/User";
 import {Alert, Col, Container, Row} from "react-bootstrap";
 import Transaction from "../transaction/Transaction";
 import './Dashboard.css'
 import transactionService from "../../services/Transaction";
 import InfiniteScroll from 'react-infinite-scroller';
+import sitePaths from "../../helpers/site_paths";
+import siteConstants from "../../helpers/site_constants";
 
 class Dashboard extends React.Component{
 
@@ -23,7 +24,7 @@ class Dashboard extends React.Component{
   render() {
     return(
       <div>
-        <AppNavBar title='Dashboard' history={this.props.history}/>
+        <AppNavBar title={siteConstants.TITLE} history={this.props.history}/>
         <Container className='custom-container'>
           {(
             <InfiniteScroll
@@ -46,26 +47,19 @@ class Dashboard extends React.Component{
       });
       return
     }
-    userService.userInformation().then(
+    transactionService.index(page).then(
       response => {
-        transactionService.index(response.user_uuid, page).then(
-          response => {
-            if(response.total_pages === 0){
-              this.setState({
-                hasMoreTransactions: false,
-                hasNoTransactions: true
-              });
-              return
-            }
-            this.setState({
-              transactions: this.state.transactions.concat(response.transactions),
-              totalPages: response.total_pages
-            });
-          },
-          error => {
-            console.log(error);
-          }
-        );
+        if(response?.total_pages === 0){
+          this.setState({
+            hasMoreTransactions: false,
+            hasNoTransactions: true
+          });
+          return
+        }
+        this.setState({
+          transactions: this.state.transactions.concat(response.transactions),
+          totalPages: response.total_pages
+        });
       },
       error => {
         console.log(error);
@@ -96,7 +90,7 @@ class Dashboard extends React.Component{
       <Col>
         <Alert variant='info'>
           <Alert.Heading> You do not have any transactions</Alert.Heading>
-          Click <Alert.Link href='#transaction'>here</Alert.Link> to add a new transaction
+          Click <Alert.Link href={sitePaths.ADD_TRANSACTION}>here</Alert.Link> to add a new transaction
         </Alert>
       </Col>
     </Row>

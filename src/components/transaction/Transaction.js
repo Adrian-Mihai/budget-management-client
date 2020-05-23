@@ -1,7 +1,8 @@
 import React from "react";
-import {Card} from "react-bootstrap";
+import {Card, Button} from "react-bootstrap";
 import siteConstants from "../../helpers/site_constants";
 import './Transaction.css'
+import transactionService from "../../services/Transaction";
 
 class Transaction extends React.Component{
 
@@ -18,11 +19,22 @@ class Transaction extends React.Component{
           <Card.Text className={!this.props.description ? 'text-muted' : ''}>
             {this.props.description ? this.props.description : 'No description'}
           </Card.Text>
-          <Card.Link href="#">Edit</Card.Link>
-          <Card.Link href="#">Delete</Card.Link>
+          <Button className="custom-button">Edit</Button>
+          <Button variant="danger" onClick={() => {this._deleteTransaction(this.props.uuid)}}>Delete</Button>
         </Card.Body>
         <Card.Footer className="text-center">{this.props.date}</Card.Footer>
       </Card>
+    )
+  }
+
+  _deleteTransaction = uuid => {
+    transactionService.deleteTransaction(uuid).then(
+      () => {
+        window.location.reload();
+      },
+      error => {
+        console.log(error);
+      }
     )
   }
 }

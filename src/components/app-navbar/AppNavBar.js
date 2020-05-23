@@ -18,7 +18,7 @@ class AppNavBar extends React.Component{
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#account">Account</Nav.Link>
+            <Nav.Link href={sitePaths.ADD_TRANSACTION}>Add Transaction</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link onClick={() => this._logOut(this.props.history)}>Sign Out</Nav.Link>
