@@ -1,12 +1,12 @@
 import authHeader from "../helpers/auth-header";
 
-const index = (user_UUID, page) => {
+const index = page => {
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
   };
 
-  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/${user_UUID}/transactions?page=${page}`, requestOptions).then(
+  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/transactions?page=${page}`, requestOptions).then(
     requestSuccess => {
       if(requestSuccess.ok){
         return requestSuccess.json().then(parsedData => {return parsedData});
@@ -18,8 +18,53 @@ const index = (user_UUID, page) => {
     });
 }
 
+const create = transaction => {
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    body: JSON.stringify({
+      transaction: {
+        operator: transaction.operator,
+        amount: transaction.amount,
+        description: transaction.description
+      }})
+  };
+
+  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/transactions`, requestOptions).then(
+    requestSuccess => {
+      if(requestSuccess.ok){
+        return requestSuccess.json().then(parsedData => {return parsedData});
+      }
+      return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
+    },
+    () => {
+      return Promise.reject({error: 'Service unavailable'});
+    });
+}
+
+const deleteTransaction = uuid => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: authHeader()
+  };
+
+  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/transactions/${uuid}`, requestOptions).then(
+    requestSuccess => {
+      if(requestSuccess.ok){
+        return requestSuccess.json().then(parsedData => {return parsedData});
+      }
+      return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
+    },
+    () => {
+      return Promise.reject({error: 'Service unavailable'});
+    });
+
+}
+
 const transactionService = {
-  index
+  index,
+  create,
+  deleteTransaction
 };
 
 export default transactionService;
