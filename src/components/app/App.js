@@ -8,6 +8,7 @@ import SignIn from "../sign-in/SignIn";
 import Dashboard from "../dashboard/Dashboard";
 import SignUp from "../sign-up/signUp";
 import AddTransaction from "../add-transaction/AddTransaction";
+import EditTransaction from "../edit-transaction/EditTransaction";
 
 class App extends React.Component {
   render() {
@@ -16,6 +17,7 @@ class App extends React.Component {
         <Switch>
           <PrivateRoute exact path={sitePaths.DASHBOARD} component={Dashboard} />
           <PrivateRoute exact path={sitePaths.ADD_TRANSACTION} component={AddTransaction} />
+          <PrivateRoute exact path={`${sitePaths.EDIT_TRANSACTION}/:id`} component={EditTransaction} />
           <Route exact path={sitePaths.SIGN_IN} component={SignIn} />
           <Route exact path={sitePaths.SIGN_UP} component={SignUp} />
         </Switch>

@@ -38,7 +38,32 @@ const create = transaction => {
       return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
     },
     () => {
-      return Promise.reject({error: 'Service unavailable'});
+      return Promise.reject({errors: ['Service unavailable']});
+    });
+}
+
+const update = transaction => {
+  const uuid = transaction?.uuid;
+  const requestOptions = {
+    method: 'PUT',
+    headers: authHeader(),
+    body: JSON.stringify({
+      transaction: {
+        operator: transaction.operator,
+        amount: transaction.amount,
+        description: transaction.description
+      }})
+  };
+
+  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/transactions/${uuid}`, requestOptions).then(
+    requestSuccess => {
+      if(requestSuccess.ok){
+        return requestSuccess.json().then(parsedData => {return parsedData});
+      }
+      return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
+    },
+    () => {
+      return Promise.reject({errors: ['Service unavailable']});
     });
 }
 
@@ -61,10 +86,30 @@ const deleteTransaction = uuid => {
 
 }
 
+const show = uuid => {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+
+  return fetch(`${process.env.REACT_APP_API_URL}/authenticate/users/transactions/${uuid}`, requestOptions).then(
+    requestSuccess => {
+      if(requestSuccess.ok){
+        return requestSuccess.json().then(parsedData => {return parsedData});
+      }
+      return requestSuccess.json().then(parsedData => {return Promise.reject(parsedData)});
+    },
+    () => {
+      return Promise.reject({error: 'Service unavailable'});
+    });
+}
+
 const transactionService = {
   index,
   create,
-  deleteTransaction
+  update,
+  deleteTransaction,
+  show
 };
 
 export default transactionService;

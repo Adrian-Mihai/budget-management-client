@@ -1,21 +1,37 @@
 import React from "react";
 import AppNavBar from "../app-navbar/AppNavBar";
+import siteConstants from "../../helpers/site_constants";
 import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {Formik} from "formik";
-import sitePaths from "../../helpers/site_paths";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import transactionService from "../../services/Transaction";
-import siteConstants from "../../helpers/site_constants";
+import sitePaths from "../../helpers/site_paths";
 
-
-class AddTransaction extends React.Component{
+class EditTransaction extends React.Component{
   constructor(props) {
     super(props);
 
     this.state = {
+      operator: '',
+      amount: '',
+      description: '',
       requestInvalid: false,
       errorMessages: []
     };
+  }
+
+  componentDidMount() {
+    transactionService.show(this.props.match.params.id).then(
+      response => {
+        this.setState({
+          uuid: response?.uuid,
+          operator: response?.operator,
+          amount: response?.amount.replace(/,/g, ' '),
+          description: response?.description
+        });
+      },
+      error => {console.log(error)}
+    )
   }
 
   render() {
@@ -34,17 +50,19 @@ class AddTransaction extends React.Component{
                 <Card.Header className="text-center" as="h3">Transaction</Card.Header>
                 <Card.Body>
                   <Formik
-                    initialValues={{operator: '+', amount: '', description: ''}}
+                    initialValues={this.state}
+                    enableReinitialize={true}
                     validationSchema={schema}
                     onSubmit={(values, {setSubmitting}) => {
-                      transactionService.create(values).then(
-                        () => {
+                      transactionService.update(values).then(
+                        response => {
                           this.props.history.push(sitePaths.DASHBOARD);
-                          },
+                        },
                         error => {
                           this.setState({requestInvalid: true, errorMessages: error?.errors});
                           setSubmitting(false);
-                        });
+                        }
+                      );
                     }}
                   >
                     {({
@@ -93,7 +111,7 @@ class AddTransaction extends React.Component{
                             onChange={handleChange}
                           />
                         </Form.Group>
-                        <Button variant="primary" type="submit" disabled={isSubmitting}>Add</Button>
+                        <Button variant="primary" type="submit" disabled={isSubmitting}>Update</Button>
                       </Form>
                     )}
                   </Formik>
@@ -121,4 +139,4 @@ class AddTransaction extends React.Component{
   )
 }
 
-export default AddTransaction
+export default EditTransaction;

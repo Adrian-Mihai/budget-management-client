@@ -1,5 +1,6 @@
 import React from "react";
 import {Nav, Navbar} from "react-bootstrap";
+import {withRouter} from 'react-router-dom';
 
 import userService from "../../services/User";
 import sitePaths from "../../helpers/site_paths";
@@ -21,17 +22,17 @@ class AppNavBar extends React.Component{
             <Nav.Link href={sitePaths.ADD_TRANSACTION}>Add Transaction</Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link onClick={() => this._logOut(this.props.history)}>Sign Out</Nav.Link>
+            <Nav.Link onClick={() => this._logOut()}>Sign Out</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
     )
   };
 
-  _logOut = (history) => {
+  _logOut = () => {
     userService.logOut();
-    history.push(sitePaths.SIGN_IN);
+    this.props.history.push(sitePaths.SIGN_IN);
   }
 }
 
-export default AppNavBar;
+export default withRouter(AppNavBar);
