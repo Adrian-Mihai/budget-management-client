@@ -30,9 +30,9 @@ class SignIn extends React.Component {
     });
 
     return (
-      <Container>
+      <Container className="custom-container">
         <Row>
-          <Col className='center'>
+          <Col>
             <Card bg="dark" text='white'>
               <Card.Header className="text-center" as="h3">Sign In</Card.Header>
               <Card.Body>

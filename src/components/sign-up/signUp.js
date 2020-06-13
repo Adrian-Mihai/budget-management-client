@@ -28,9 +28,9 @@ class SignUp extends React.Component{
         .required('password confirmation is a required field')
     })
     return(
-      <Container>
+      <Container className="custom-container">
         <Row>
-          <Col className='center'>
+          <Col>
             <Card bg="dark" text="white">
               <Card.Header className="text-center" as="h3">Sign Up</Card.Header>
               <Card.Body>
