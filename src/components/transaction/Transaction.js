@@ -1,8 +1,10 @@
 import React from "react";
 import {Card, Button} from "react-bootstrap";
+import {withRouter} from 'react-router-dom';
 import siteConstants from "../../helpers/site_constants";
 import './Transaction.css'
 import transactionService from "../../services/Transaction";
+import sitePaths from "../../helpers/site_paths";
 
 class Transaction extends React.Component{
 
@@ -19,16 +21,21 @@ class Transaction extends React.Component{
           <Card.Text className={!this.props.description ? 'text-muted' : ''}>
             {this.props.description ? this.props.description : 'No description'}
           </Card.Text>
-          <Button className="custom-button">Edit</Button>
-          <Button variant="danger" onClick={() => {this._deleteTransaction(this.props.uuid)}}>Delete</Button>
+          <Button className="custom-button" onClick={() => {this._editTransaction()}}>Edit</Button>
+          <Button variant="danger" onClick={() => {this._deleteTransaction()}}>Delete</Button>
         </Card.Body>
         <Card.Footer className="text-center">{this.props.date}</Card.Footer>
       </Card>
     )
   }
 
-  _deleteTransaction = uuid => {
-    transactionService.deleteTransaction(uuid).then(
+  _editTransaction = () => {
+    let path = `${sitePaths.EDIT_TRANSACTION}/${this.props.uuid}`;
+    this.props.history.push(path);
+  }
+
+  _deleteTransaction = () => {
+    transactionService.deleteTransaction(this.props.uuid).then(
       () => {
         window.location.reload();
       },
@@ -39,4 +46,4 @@ class Transaction extends React.Component{
   }
 }
 
-export default Transaction;
+export default withRouter(Transaction);

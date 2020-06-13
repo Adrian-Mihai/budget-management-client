@@ -24,7 +24,7 @@ class Dashboard extends React.Component{
   render() {
     return(
       <div>
-        <AppNavBar title={siteConstants.TITLE} history={this.props.history}/>
+        <AppNavBar title={siteConstants.TITLE}/>
         <Container className='custom-container'>
           {(
             <InfiniteScroll
